@@ -1,4 +1,4 @@
-*.md
+output/
 __pycache__/
 env/
 data

@@ -1,3 +1,7 @@
+#! /usr/bin/env python
+
+import argparse
+import os
 import time
 
 import slides
@@ -44,6 +48,12 @@ pages = [
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog='build.py')
+    parser.add_argument('outfile', help='name of output file')
+    args = parser.parse_args()
+
+    if not os.path.exists('output'):
+        os.makedirs('output')
 
     print('> loading', end='')
     start = time.time()
@@ -51,7 +61,7 @@ if __name__ == '__main__':
     elapsed = time.time() - start
     print('[{0:.2f}]'.format(elapsed))
 
-    with open('stats.md', 'w') as out:
+    with open(os.path.join('output', args.outfile), 'w') as out:
         for page in pages:
             start = time.time()
             print('> rendering: {}'.format(page.__name__), end='')
