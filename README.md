@@ -18,6 +18,15 @@ $ pip install -r requirements.txt
 ## Run
 
 ```
-$ ./build.py stats.md
+$ ./build.py
 $ mdp output/stats.md
+```
+
+one of the build steps combines all the logs into a single frame prior to
+generating the stats; This step takes a while to complete. However, every
+build caches the combined logs into a single file stored on disk. You can
+opt not to rebuild the combined logs everytime by simply using `--cached`.
+
+```
+$ ./build --cached
 ```

@@ -1,5 +1,6 @@
 import datetime
 import itertools
+import json
 import os
 
 import pandas as pd
@@ -54,7 +55,7 @@ def identity(x):
     return x
 
 
-def load_all():
+def rebuild():
     users = pd.read_json(USERS)
 
     channels_selected = [

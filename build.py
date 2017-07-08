@@ -4,6 +4,8 @@ import argparse
 import os
 import time
 
+import pandas as pd
+
 import slides
 import utils
 
@@ -49,22 +51,36 @@ pages = [
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='build.py')
-    parser.add_argument('outfile', help='name of output file')
+    parser.add_argument(
+        '--outfile', default='stats.md', help='name of output file')
+    parser.add_argument(
+        '--cached', action='store_true', help='use cached log')
     args = parser.parse_args()
 
     if not os.path.exists('output'):
         os.makedirs('output')
 
-    print('> loading', end='')
+    print('> loading ', end='')
     start = time.time()
-    log = utils.load_all()
+
+    if args.cached:
+        try:
+            log = pd.read_pickle('output/all.pkl')
+        except FileNotFoundError:
+            print('[cache not found, rebuilding] ', end='')
+            log = utils.rebuild()
+            log.to_pickle('output/all.pkl')  # cache it
+    else:
+        log = utils.rebuild()
+        log.to_pickle('output/all.pkl')  # cache it
+
     elapsed = time.time() - start
     print('[{0:.2f}]'.format(elapsed))
 
     with open(os.path.join('output', args.outfile), 'w') as out:
         for page in pages:
             start = time.time()
-            print('> rendering: {}'.format(page.__name__), end='')
+            print('> rendering: {} '.format(page.__name__), end='')
 
             for segment in page(log):
                 out.write('\n'.join(x.strip() for x in segment.splitlines()))
