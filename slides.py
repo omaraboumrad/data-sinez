@@ -28,6 +28,19 @@ def what_is_it(log):
 
 
 
+
+    -> Seed  Investment        1,000$ (V) <-
+    -> Series A            1,000,000$ (V) <-
+    -> Series B        1,000,000,000$ (V) <-
+    -> Series C    1,000,000,000,000$ (V) <-
+    -> Seri    1,000,000,000,000,000$ (V) <-
+    ->     1,000,000,000,000,000,000$ (V) <-
+    -> 1,000,000,000,000,000,000,000$ (V) <-
+
+
+
+    Note: Actual = V - 10^log(V)
+
     ------
     """
 
@@ -112,15 +125,18 @@ def warning(log):
 
 
     The stats in this presentation:
+        - are not meant for the layman.
         - will shock you to your core.
-        - took 375 hours to compute on a 1024 core machine on Fraggle.
+        - took 375 hours to compute on a 1024 core machine on Snap/Fraggle/Pop.
         - on the cloud with AWSCompuLambdaLastic say me Fantastic.
-        - are very accurate, no false positives whatsoever.
+        - are very accurate, no false positives or negatives whatsoever.
         - will be sold to NSA for cash.
 
 
 
-    Feel free to talk to me to about how it was done (5 doodoo)
+    Feel free to talk to me to about how it was done
+
+    (5 doodoo)
 
     ------
     """
@@ -132,7 +148,7 @@ def outro(log):
 
 
 
-    -> code: tiny.cc/data-sinez <-
+    -> github: omaraboumrad/data-sinez <-
 
 
     -> anyone.has_question?  <= lolruby <-
@@ -147,10 +163,10 @@ def outro(log):
 
 
 def mena_devs_activity(log):
-    yield """\
+    header = """\
     -> # How is MENA Devs activity throughout the years? <-
 
-    Since 2015
+    a long long time ago. (Part {})
 
     <br>
     """
@@ -161,9 +177,20 @@ def mena_devs_activity(log):
     flattened['ts_friendly'] = flattened['ts'].dt.strftime('%Y - %b')
     del flattened['ts']
     flattened.set_index('ts_friendly', inplace=True)
-    # flattened.to_csv('yearly.csv', sep='\t')
 
-    yield plot(flattened)
+    # Part 1
+    yield header.format(1)
+    yield plot(flattened[:12])
+    yield '\n------\n'
+
+    # Part 2
+    yield header.format(2)
+    yield plot(flattened[12:24])
+    yield '\n------\n'
+
+    # Part 3
+    yield header.format(3)
+    yield plot(flattened[24:])
     yield '\n------\n'
 
 
@@ -464,5 +491,21 @@ def most_active_in_general(log):
     """
 
     predicate = log['channel'] == 'general'
+    then = identity
+    yield from sieve(log, predicate, then)
+
+
+def most_yells(log):
+    yield """\
+    -> # Who's yells the most? <-
+
+    tawashtna...
+    """
+
+    log['wordcount'] = log['text'].str.split().str.len()
+
+    predicate = (
+        (log['text'] == log['text'].str.upper())
+        & (log['wordcount'] > 4))
     then = identity
     yield from sieve(log, predicate, then)

@@ -18,7 +18,7 @@ pages = [
     slides.codename,
     slides.warning,
 
-    # slides.mena_devs_activity,
+    slides.mena_devs_activity,
     slides.early_birds,
     slides.most_active_during_day,
     slides.most_active_during_night,
@@ -41,7 +41,7 @@ pages = [
     slides.karma_whore,
     slides.most_affirmative,
     slides.most_dissenting,
-    # slides.most_yells,
+    slides.most_yells,
     # slides.most_upvotes,
     # slides.most_downvotes,
 
